@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using PlatformAPI.Data.Repositories;
 using PlatformAPI.Dtos;
 using PlatformAPI.Models;
+using PlatformAPI.SyncDataAPIs.Http;
 
 namespace PlatformAPI.Controllers
 {
@@ -13,18 +14,18 @@ namespace PlatformAPI.Controllers
     {
         private readonly IPlatformRepo _repository;
         private readonly IMapper _mapper;
-        //private readonly ICommandDataClient _commandDataClient;
+        private readonly ICommandDataClient _commandDataClient;
         //private readonly IMessageBusClient _messageBusClient;
 
         public PlatformsController(
             IPlatformRepo repository,
-            IMapper mapper)
-            //ICommandDataClient commandDataClient,
+            IMapper mapper,
+            ICommandDataClient commandDataClient)
             //IMessageBusClient messageBusClient)
         {
             _repository = repository;
             _mapper = mapper;
-            //_commandDataClient = commandDataClient;
+            _commandDataClient = commandDataClient;
             //_messageBusClient = messageBusClient;
         }
 
@@ -62,10 +63,10 @@ namespace PlatformAPI.Controllers
 
             var platformReadDto = _mapper.Map<PlatformReadDto>(platformModel);
 
-            // Send Sync Message
+            //Send Sync Message
             try
             {
-                //await _commandDataClient.SendPlatformToCommand(platformReadDto);
+                await _commandDataClient.SendPlatformToCommand(platformReadDto);
             }
             catch (Exception ex)
             {
