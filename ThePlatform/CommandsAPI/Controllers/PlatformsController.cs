@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using CommandsAPI.Data.Repositories;
+using CommandsAPI.Dtos;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CommandsAPI.Controllers
@@ -7,15 +10,7 @@ namespace CommandsAPI.Controllers
     [ApiController]
     public class PlatformsController : ControllerBase
     {
-        [HttpPost]
-        public ActionResult TestInboundConnection()
-        {
-            Console.WriteLine("--> Inbound POST # Command Service");
-
-            return Ok("Inbound test of from Platforms Controler");
-        }
-        /*
-         private readonly ICommandRepo _repository;
+        private readonly ICommandRepo _repository;
         private readonly IMapper _mapper;
 
         public PlatformsController(ICommandRepo repository, IMapper mapper)
@@ -41,7 +36,5 @@ namespace CommandsAPI.Controllers
 
             return Ok("Inbound test of from Platforms Controler");
         }
-    }
-         */
     }
 }

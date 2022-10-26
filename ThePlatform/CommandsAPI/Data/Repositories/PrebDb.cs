@@ -8,11 +8,11 @@ namespace CommandsAPI.Data.Repositories
         {
             using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
             {
-                var grpcClient = serviceScope.ServiceProvider.GetService<IPlatformDataClient>();
+                //var grpcClient = serviceScope.ServiceProvider.GetService<IPlatformDataClient>();
 
-                var platforms = grpcClient.ReturnAllPlatforms();
+                //var platforms = grpcClient.ReturnAllPlatforms();
 
-                SeedData(serviceScope.ServiceProvider.GetService<ICommandRepo>(), platforms);
+                //SeedData(serviceScope.ServiceProvider.GetService<ICommandRepo>(), platforms);
             }
         }
 
