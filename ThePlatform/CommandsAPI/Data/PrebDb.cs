@@ -1,6 +1,8 @@
-﻿using CommandsAPI.Models;
+﻿using CommandsAPI.Data.Repositories;
+using CommandsAPI.Models;
+using CommandsAPI.SyncDataServices.Grpc;
 
-namespace CommandsAPI.Data.Repositories
+namespace CommandsAPI.Data
 {
     public static class PrepDb
     {
@@ -8,11 +10,11 @@ namespace CommandsAPI.Data.Repositories
         {
             using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
             {
-                //var grpcClient = serviceScope.ServiceProvider.GetService<IPlatformDataClient>();
+                var grpcClient = serviceScope.ServiceProvider.GetService<IPlatformDataClient>();
 
-                //var platforms = grpcClient.ReturnAllPlatforms();
+                var platforms = grpcClient.ReturnAllPlatforms();
 
-                //SeedData(serviceScope.ServiceProvider.GetService<ICommandRepo>(), platforms);
+                SeedData(serviceScope.ServiceProvider.GetService<ICommandRepo>(), platforms);
             }
         }
 

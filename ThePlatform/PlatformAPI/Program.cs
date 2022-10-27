@@ -2,8 +2,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using PlatformAPI.AsyncDataServices;
 using PlatformAPI.Data;
 using PlatformAPI.Data.Repositories;
+using PlatformAPI.SyncDataAPIs.Grpc;
 using PlatformAPI.SyncDataAPIs.Http;
 
 
@@ -22,7 +24,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IPlatformRepo, PlatformRepo>();
 
 builder.Services.AddHttpClient<ICommandDataClient, HttpCommandDataClient>();
+builder.Services.AddHttpClient<IMessageBusClient, MessageBusClient>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddGrpc();
 
 Console.WriteLine("--> Using InMem Db");
 builder.Services.AddDbContext<AppDbContext>(opt =>
@@ -48,7 +52,12 @@ app.UseEndpoints(endpoints =>
 
     endpoints.MapGet("/protos/platforms.proto", async context =>
     {
-        await context.Response.WriteAsync(File.ReadAllText("Protos/platforms.proto"));
+        endpoints.MapGrpcService<GrpcPlatformService>();
+
+        endpoints.MapGet("/protos/platforms.proto", async context =>
+        {
+            await context.Response.WriteAsync(File.ReadAllText("Protos/platforms.proto"));
+        });
     });
 });
 app.UseHttpsRedirection();
